@@ -47,5 +47,5 @@ print("Sales Dashboard")
 print("----------------")
 print("Customer | Order Date | Product | Quantity | Price | Total")
 print("---------|------------|---------|----------|-------|-------")
-for customer_name, order_date, product_name, quantity, price, total_amount in data:
-  print(f
+#for customer_name, order_date, product_name, quantity, price, total_amount in data:
+#  print(f
