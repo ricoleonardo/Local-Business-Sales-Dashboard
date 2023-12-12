@@ -2,7 +2,7 @@ import sqlite3
 
 # 1. Database Setup:
 # Connect to the database (creates the file if it doesn't exist)
-conn = sqlite3.connect("pinoybiz_sales1.db")
+conn = sqlite3.connect("pinoybiz_sales.db")
 
 # Create cursor object
 cursor = conn.cursor()
@@ -23,7 +23,8 @@ CREATE TABLE IF NOT EXISTS orders (
   amount DECIMAL(7,2) NOT NULL,
   order_date DATE NOT NULL,
   customer_id INTEGER NOT NULL,
-  transaction_id INTEGER NOT NULL,
+  transaction_id,
+  discounted_amount INTEGER,
   FOREIGN KEY (customer_id) REFERENCES customers(id),
   FOREIGN KEY (transaction_id) REFERENCES transactions(id)
 );
@@ -32,7 +33,9 @@ CREATE TABLE IF NOT EXISTS orders (
 create_transactions_table = """
 CREATE TABLE IF NOT EXISTS transactions (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  transaction_date DATE NOT NULL
+  transaction_date DATE NOT NULL,
+  order_id INTEGER,
+  FOREIGN KEY (order_id) REFERENCES orders(transaction_id)
 );
 """
 
@@ -61,11 +64,11 @@ insert_orders = [
 ]
 
 insert_transactions = [
-    ("2023-12-06"),
-    ("2023-12-07"),
-    ("2023-12-05"),
-    ("2023-11-30"),
-    ("2023-10-01")
+    ("2023-12-06", 1),
+    ("2023-12-07", 1),
+    ("2023-12-05", 1),
+    ("2023-11-30", 1),
+    ("2023-10-01", 1)
 ]
 
 # Execute the SQL statements to insert the data
@@ -78,7 +81,7 @@ for order in insert_orders:
     cursor.execute("INSERT INTO orders (product, amount, order_date, customer_id, transaction_id) VALUES (?, ?, ?, ?, ?)", order)
 
 for transaction in insert_transactions:
-    cursor.execute("INSERT INTO transactions (transaction_date) VALUES (?)", [transaction])
+    cursor.execute("INSERT INTO transactions (transaction_date, order_id) VALUES (?, ?)", (transaction))
 
 
 
