@@ -55,39 +55,39 @@ cursor.execute(create_order_items_table)
 
 # Define SQL statements to insert initial data
 insert_customers = [
-    ("1", "Juan Dela Cruz", "juan.delacruz@example.com", "09123456789"),
-    ("2", "Maria Clara", "maria.clara@example.com", "09987654321"),
-    ("3", "Kalvin Leonardo", "kalvin.leonardo@example.com", "0912344568")
+    ("Juan Dela Cruz", "juan.delacruz@example.com", "09123456789"),
+    ("Maria Clara", "maria.clara@example.com", "09987654321"),
+    ("Kalvin Leonardo", "kalvin.leonardo@example.com", "0912344568")
 ]
 
 insert_products = [
-    ("1", "T-Shirt", "Basic white t-shirt", 250.00),
-    ("2", "Pants", "Comfortable blue jeans", 500.00),
+    ("T-Shirt", "Basic white t-shirt", 250.00),
+    ("Pants", "Comfortable blue jeans", 500.00),
 ]
 
 insert_orders = [
-    ("1", 1, "2023-12-06", 400.00),
-    ("2", 2, "2023-12-07", 750.00),
+    (1, "2023-12-06", 400.00),
+    (2, "2023-12-07", 750.00),
 ]
 
 insert_order_items = [
-    ("1", 1, 1, 2, 250.00),
-    ("2", 2, 2, 1, 500.00),
-    ("3", 2, 1, 1, 250.00),
+    (1, 1, 2, 250.00),
+    (2, 2, 1, 500.00),
+    (2, 1, 1, 250.00),
 ]
 
 # Execute the SQL statements to insert the data
 for customer in insert_customers:
-    cursor.execute("INSERT INTO customers VALUES (?, ?, ?, ?)", customer)
+    cursor.execute("INSERT INTO customers (name, email, phone_number) VALUES (?, ?, ?)", customer)
 
 for product in insert_products:
-    cursor.execute("INSERT INTO products VALUES (?, ?, ?, ?)", product)
+    cursor.execute("INSERT INTO products (name, description, price) VALUES (?, ?, ?)", product)
 
 for order in insert_orders:
-    cursor.execute("INSERT INTO orders VALUES (?, ?, ?, ?)", order)
+    cursor.execute("INSERT INTO orders (customer_id, order_date, total_amount) VALUES (?, ?, ?)", order)
 
 for item in insert_order_items:
-    cursor.execute("INSERT INTO order_items VALUES (?, ?, ?, ?, ?)", item)
+    cursor.execute("INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)", item)
 
 # Commit changes and close the connection
 conn.commit()
